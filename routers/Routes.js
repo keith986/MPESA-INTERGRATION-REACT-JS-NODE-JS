@@ -15,15 +15,16 @@ routers.use(express.urlencoded({extended: false}))
 routers.use(express.json())
 routers.use(bodyParser.json())
 
+// CONNECTING TO FRONTEND
 routers.use(cors({
            origin : 'http://localhost:5173',
            credentials: true
            }))
 
-// ACCESS TOKEN FUNCTION - Updated to use 'axios'
+// ACCESS TOKEN 
 async function getAccessToken() {
-    const consumer_key = "xrhmuY8WLWvD1qw6RAGQlyel9dw8GBAWK5vjOaLKz4Dmi4GV"; // REPLACE IT WITH YOUR CONSUMER KEY
-    const consumer_secret = "HHsoFqF0nqZ3LfpOUcCKJysy4JKFnAUKZpgXQJj6PgYEFA3uxklpC9GBvYu6egJJ"; // REPLACE IT WITH YOUR CONSUMER SECRET
+    const consumer_key = ""; // REPLACE IT WITH YOUR CONSUMER KEY
+    const consumer_secret = ""; // REPLACE IT WITH YOUR CONSUMER SECRET
     const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
     const auth =
       "Basic " +
@@ -47,7 +48,7 @@ async function getAccessToken() {
 routers.get("/api/access_token", (req, res) => {
     getAccessToken()
       .then((accessToken) => {
-        res.json({ message: "😀 Your access token is " + accessToken });
+        res.json({ message: "Your access token is " + accessToken });
       })
       .catch(console.log);
   });
@@ -82,8 +83,8 @@ routers.post('/stkpush', (req, res) => {
                 PartyA: phoneNumber, //phone number to receive the stk push
                 PartyB: "174379",
                 PhoneNumber: phoneNumber,
-                CallBackURL: "https://9892-105-27-235-60.ngrok-free.app/api/callback",
-                AccountReference: 1311698345,
+                CallBackURL: "https://9892-105-27-235-60.ngrok-free.app/api/callback", //Use actual URL or ngrok for MPESA API TO send back response
+                AccountReference: 'MPESA DARAJA API STK PUSH TEST',//
                 TransactionDesc: "Mpesa Daraja API stk push test",
               },
               {
@@ -97,14 +98,14 @@ routers.post('/stkpush', (req, res) => {
               return res.json({
                 "ResponseCode" : "0",
                 "ResponseDesc" : "success",
-                "ResponseMessage" : "😀 Request is successful done ✔✔. Please enter mpesa pin to complete the transaction"
+                "ResponseMessage" : "Request is successful done ✔✔. Please enter mpesa pin to complete the transaction"
               })
             })
             .catch((error) => {
                 return res.json({
                     "ResponseCode" : "1",
                     "ResponseDesc" : "Failed",
-                    "ResponseMessage" : "😀 Request is Failed!!",
+                    "ResponseMessage" : "Request is Failed!!",
                     "error": error.message
                   })
             });
